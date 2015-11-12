@@ -139,6 +139,20 @@ abstract class Ardent extends Model {
      * @var \Illuminate\Validation\Factory
      */
     protected static $validationFactory;
+    
+    /**
+     * The column to order all results from all queries of this model by default. If left blank, the results will not be ordered.
+     * 
+     * @var string
+     */
+    protected $orderBy;
+    
+    /**
+     * If the $orderBy property is set, this property determines how the results are ordered (asc, desc).
+     * 
+     * @var string
+     */
+    protected $orderDirection = 'asc';
 
     /**
      * Can be used to ease declaration of relationships in Ardent models.
@@ -257,7 +271,7 @@ abstract class Ardent extends Model {
     public function rules() {
         return $this->rules;
     }
-
+    
 	/**
 	 * Statically get the table name of the class.
 	 * 
@@ -853,6 +867,9 @@ abstract class Ardent extends Model {
 		// builder can easily access any information it may need from the model
 		// while it is constructing and executing various queries against it.
 		$builder->setModel($this)->with($this->with);
+		
+		if(!empty($this->orderBy))
+		    $builder->orderBy($this->orderBy, $this->orderDirection);
 
 		return $this->applyGlobalScopes($builder);
 	}
