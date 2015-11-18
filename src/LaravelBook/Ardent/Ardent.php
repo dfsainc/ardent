@@ -272,6 +272,21 @@ abstract class Ardent extends Model {
         return $this->rules;
     }
     
+    /**
+     * Returns all attributes in the model that match the keys given in the input array.
+     * 
+     * @param array $array
+     */
+    public function getAttributesFromArray(array $keys=[]) 
+    {
+        $values = [];
+        foreach($keys as $key) {
+            if(isset($this->attributes[$key]))
+                $values[$key] = $this->attributes[$key];
+        }
+        return $values;
+    }
+    
 	/**
 	 * Statically get the table name of the class.
 	 * 
